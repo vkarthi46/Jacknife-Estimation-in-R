@@ -1,0 +1,46 @@
+# JACKKNIFE ESTIMATION\
+x=c(29.26,27.33,31.4,26.27,26.35,26.61,27.12,27.19,26.2,28.01,29.74, 28.78,28.02,27,27.5,26.12,26.04,28.41,33.28,26.6,26.38,27.6,29.74,27.52,27.21)
+mean(x)
+
+# JACKKNIFE ESTIMATION OF MEAN
+jack1<-numeric(length(x)-1)
+parest1<-numeric(length(x))
+for(i in 1:length(x))	
+{
+for(j in 1:length(x))
+{
+if (j<i) jack1[j]<-x[j]
+else if(j>i) jack1[j-1]<-x[j]
+}
+parest1[i]<-length(x)*mean(x)-(length(x)-1)*mean(jack1)
+}
+
+mean(parest1)
+var(parest1)
+# CONFIDENCE INTERVAL
+mean(parest1)+qt(0.975,length(x)-1)*sqrt(var(parest1)/length(x))
+mean(parest1)-qt(0.975,length(x)-1)*sqrt(var(parest1)/length(x))
+
+#JACKKNIFE ESTIMATION
+cv<-function(x) { sqrt(var(x))/mean(x);}
+
+#JACKKNIFE COEFFICIENT OF VARIATION
+jack2<-numeric(length(x)-1)
+parest2<-numeric(length(x))
+for(i in 1:length(x))	
+{
+for(j in 1:length(x))
+{
+if (j<i) jack2[j]<-x[j]
+else if(j>i) jack2[j-1]<-x[j]
+}
+parest2[i]<-length(x)*cv(x)-(length(x)-1)*cv(jack2)
+}
+
+mean(parest2)
+var(parest2)
+
+# CONFIDENCE INTERVAL
+mean(parest2)+qt(0.975,length(x)-1)*sqrt(var(parest2)/length(x))
+mean(parest2)-qt(0.975,length(x)-1)*sqrt(var(parest2)/length(x))
+
